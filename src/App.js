@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
+import styles from "./App.module.css";
 
 function App() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
   const [emailDirty, setEmailDirty] = useState(false)
   const [passwordDirty, setPasswordDirty] = useState(false)
-  const [emailError, setEmailError] = useState("Поле не может быть пустым")
-  const [passwordError, setPasswordError] = useState("Поле не может быть пустым")
+  const [emailError, setEmailError] = useState("Email cannot be empty")
+  const [passwordError, setPasswordError] = useState("Password cannot be empty")
   const [formValid, setFormValid] = useState(false)
 
   useEffect(() => {
@@ -15,36 +16,36 @@ function App() {
     } else {
       setFormValid(true)
     }
-  },[emailError, passwordError])
+  }, [emailError, passwordError])
 
   const emailHandler = (e) => {
     setEmail(e.target.value)
     const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     if (!re.test(String(e.target.value).toLowerCase())) {
-      setEmailError('Wrong email')
+      setEmailError("Wrong email")
     } else {
-      setEmailError('')
+      setEmailError("")
     }
   }
 
   const passwordHandler = (e) => {
     setPassword(e.target.value)
     if (e.target.value.length < 4 || e.target.value.length > 8) {
-      setPasswordError('Пароль должен быть длиннее 3 и не больше 8 символов')
+      setPasswordError("A password must contain 4 to 8 characters")
       if (!e.target.value) {
-        setPasswordError('')
+        setPasswordError("")
       }
     } else {
-      setPasswordError('')
+      setPasswordError("")
     }
   }
 
   const blurHandler = (e) => {
     switch (e.target.name) {
-      case 'email':
+      case "email":
         setEmailDirty(true)
         break
-      case 'password':
+      case "password":
         setPasswordDirty(true)
         break
       default:
@@ -52,24 +53,27 @@ function App() {
   }
 
   return (
-    <div className="App">
-      <form>
-        <h1>Регистрация</h1>
-        {(emailDirty && emailError) && <div style={{ color: 'red' }}>{emailError}</div>}
-        <input onChange={e => emailHandler(e)}
+    <div className={styles.register}>
+      <form className={styles.register_form}>
+        <h1 className={styles.register_h1}>SIGN UP</h1>
+        {(emailDirty && emailError) && <div className={styles.error}>{emailError}</div>}
+        <input className={styles.input} onChange={(e) => emailHandler(e)}
           value={email}
-          onBlur={e => blurHandler(e)}
+          onBlur={(e) => blurHandler(e)}
           name="email"
           type="text"
-          placeholder='Enter your email' />
+          placeholder="Enter your email" />
 
-        {(passwordDirty && passwordError) && <div style={{ color: 'red' }}>{passwordError}</div>}
-        <input onChange={e => passwordHandler(e)}
+        {(passwordDirty && passwordError) && <div className={styles.error}>{passwordError}</div>}
+        <input className={styles.input} onChange={(e) => passwordHandler(e)}
           value={password}
-          onBlur={e => blurHandler(e)}
+          onBlur={(e) => blurHandler(e)}
           name="password" type="text"
-          placeholder='Enter your password' />
-        <button disabled={!formValid}type="submit">Регистрация</button>
+          placeholder="Enter your password" />
+        <button
+          className={styles.input + " " + styles.input_button}
+          disabled={!formValid}
+          type="submit">SIGN UP</button>
       </form>
     </div>
   );
